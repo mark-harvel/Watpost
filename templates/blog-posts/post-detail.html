@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% if post.status == 0 and post.author != request.user %}
+    <style>
+        .post-container {
+            display: none;
+        }
+    </style>
+    <h1 class="mt-5 pt-5">This post is not yet available to the public.</h1>
+    <h1>When the author publish it, it will be visible.</h1>
+{% endif %}
+
+<div class="container post-container overflow-hidden">
+
+    <div class="header-post">
+        {% if post.status == 0 and post.author == request.user %}
+            <h1 style="background-color: rgb(255, 188, 62);">
+                This is a Draft. Update the status to Publish to make it visible!!
+            </h1>
+        {% endif %}
+
+        <h1 class="post-title">
+            {% if post.is_nsfw == True %}
+                <span style="color: red;">+18</span>
+            {% endif %}
+            {{ post.title }}
+        </h1>
+        <img src="{{ post.poster.url }}" alt="">
+
+    </div>
+
+    <a class="btn btn-dark btn-rounded d-block mb-3" href="{% url 'topic_posts' post.topic.id %}">{{ post.topic }}</a>
+
+    {% if post.tags %}
+        {% for tag in post.tags.all %}
+            <a class="btn btn-rounded mb-2" href="{% url 'tag_posts' tag.slug %}">
+                {{ tag.name }}
+            </a>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container">
+        <ul class="nav justify-content-start mt-3">
+            <li class="nav-item mb-2">
+                <a class="" href="{{ post.author.get_absolute_url }}">
+                    {% if post.author.picture %}
+                        <img src="{{ post.author.picture.url }}" alt="pic" class="rounded" width="54"
+                            height="44">
+                    {% else %}
+                    <img  src="{% static 'img/avatar.jpg' %}" alt="pic" class="rounded" width="54"
+                        height="44">
+                    {% endif %}
+                    {{ post.author }}
+                </a>
+            </li>
+
+            <li class="nav-item mx-4">
+                <p class="text-muted">{{ post.created }}</p>
+            </li>
+        </ul>
+    </div>
+
+    {% if request.user == post.author %}
+        <a class="btn btn-rounded btn-warning" href="{% url 'update_post' post.id %}">
+            Update
+        </a>
+        <a class="btn btn-rounded btn-danger" href="{% url 'delete_post' post.id %}">
+            Delete
+        </a>
+    {% endif %}
+
+    <div class="container">
+        <ul class="nav  flex-column mt-3">
+            <li class="nav-item mb-2">
+                <a class="like btn btn-floating" href="#" data-id="{{ post.id }}"
+                    data-action="{% if request.user in post.users_like.all %}un{% endif %}like"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Like">
+                    {% if request.user in post.users_like.all %}
+                        <i class="fas fa-heart" style="color: red;"></i>
+                    {% else %}
+                        <i class="far fa-heart"></i>
+                    {% endif %}
+                </a>  
+
+                <span id="{{ post.id }}" class="total mx-2">{{ post.users_like.count }}</span>likes
+
+            </li>
+        </ul>
+    </div>
+
+    <div class="container overflow-hidden">
+        <p>{{ post.content|safe }}</p>
+    </div>
+
+    <div class="row mt-4 mb-4">
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                {{ form }}
+                <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        <button class="btn btn-success" type="submit">Sent</button>
+                    </li>
+                </ul>                
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {% for comment in comments %}
+                {% include "components/comment.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container pt-5 mt-5"></div>
+
+<div class="container-fluid watpost-main">
+    <h1 class="text-center">Custom Feed</h1>
+    <hr class="charlie">
+    {% if posts %}
+        <div class="row row-cols-1 row-cols-md-4 g-4 overflow-hidden">
+            {% for post in posts %}
+                <div class="col mb-3">
+                    {% include "components/post-card.html"%}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1 class="text-center mt-4"> Start Following to get custom feed on subs page</h1>
+        <a class="text-center d-block btn btn-rounded mb-4" href="{% url 'index' %}">Go to Home Page</a>
+    {% endif %}
+</div>
+{% endblock content %}

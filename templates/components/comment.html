@@ -1,0 +1,32 @@
+{% load static %}
+<div>
+    <ul class="nav justify-content-between">
+        <li class="nav-item mb-4">
+            <a class="ripple" href="{{ comment.author.get_absolute_url }}">
+                {% if comment.author.picture %}
+                    <img src="{{ comment.author.picture.url }}" alt="mdo" class="rounded" width="54" 
+                        height="44">
+                {% else %}
+                    <img src="{% static 'img/avatar.jpg' %}" alt="mdo" class="rounded" width="54" 
+                    height="44">
+                {% endif %}
+                {{ comment.author }}
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <p class="text-muted">{{ comment.created }}</p>
+        </li>
+    </ul>
+
+    <div class="container mx-4">
+        <p>{{ comment.content }}</p>
+    </div>
+    
+    {% if request.user == comment.author %}
+    <a class="btn btn-rounded btn-danger" href="{% url 'delete_comment' comment.id %}">
+        Delete
+    </a>
+{% endif %}
+</div>
+<hr>

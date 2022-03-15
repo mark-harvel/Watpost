@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container pt-5 mt-5"></div>
+
+<div class="container-fluid watpost-main">
+
+    <div class="overflow-hidden">
+        {% for topic in topics %}
+
+            <a class="btn mb-4 mt-2 mx-2" href="{% url 'topic_posts' topic.id %}">
+                {{ topic.title }}
+            </a>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

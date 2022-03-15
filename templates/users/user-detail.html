@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ profile.username }} - Watpost{% endblock title %}
+
+
+{% block content %}
+    <div class="container pt-4 mt-5">
+
+        <div class="row justify-content-center mt-4 mb-3">
+            <div class="card col-md-8">
+                <h2 class="card-title text-center">{{ profile.username }}</h2>
+
+                <div class="text-center mt-4 mb-4">
+                    {% if profile.picture %}
+                        <img class="img-fluid rounded" width="200" height="180" src="{{ profile.picture.url }}" alt="pic">
+                    {% else %}
+                        <img class="img-fluid rounded" width="200" height="180" src="{% static 'img/avatar.jpg' %}" alt="pic">
+                    {% endif %}
+                </div>
+
+                <h2 class="text-center mb-4">{{ profile.first_name }} {{ profile.last_name }}</h2>
+                
+                <h5 class="text-center">
+                    <span class="count">
+                        {{ profile.followers.count }}
+                    </span>
+                    <span class="mx-2">Followers</span> 
+                </h5>
+
+                <p class="p-4">{{ profile.about }}</p>
+
+                <a href="#" data-id="{{ profile.id }}"
+                data-action="{% if request.user in profile.followers.all %}un{% endif %}follow"
+                class="follow btn btn-rounded d-block btn-dark mb-4">
+                {% if request.user not in profile.followers.all %}
+                    Follow
+                {% else %}
+                    Unfollow
+                {% endif %}
+                </a>
+            </div>
+        </div>
+        
+        <div class="container-fluid watpost-main">
+            <h5 class="text-center">{{ posts.count }} Posts</h5>
+            <hr class="charlie">
+            <div class="row row-cols-1 row-cols-md-4 g-4 overflow-hidden">
+                {% for post in posts %}
+                    <div class="col mb-3">
+                        {% include "components/post-card.html"%}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

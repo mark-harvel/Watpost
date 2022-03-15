@@ -1,0 +1,351 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{% static 'MDB5-STANDARD-UI-KIT-Free-3.10.2/css/mdb.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css'%}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    rel="stylesheet"
+    />
+
+    <title>{% block title %}Watpost - Tell Your Stories{% endblock title %}</title>
+</head>
+<body>
+
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+      <!-- Toggle button -->
+      <button
+        class="navbar-toggler btn btn-light btn-lg btn-floating"
+        type="button"
+        data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <a class="navbar-brand " style="color: white;" href="{% url 'index' %}">
+        Watpost
+      </a>
+  
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- Left links -->
+        <ul class="navbar-nav me-auto mb-lg-0">
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">Home</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'all_topics' %}">Topic</a>
+          </li>
+
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'subs' %}">Subs</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'new_post' %}">New Post</a>
+            </li>
+          {% endif %}
+
+        </ul>
+        <!-- Left links -->
+
+      </div>
+      <!-- Collapsible wrapper -->
+  
+      <!-- Right elements -->
+      <div class="d-flex align-items-end mt-2">
+
+        <!-- Avatar -->
+        {% if user.is_authenticated %}
+        <div class="dropdown">
+          <a
+            class="dropdown-toggle d-flex align-items-center hidden-arrow"
+            href="#"
+            id="navbarDropdownMenuAvatar"
+            role="button"
+            data-mdb-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+            {% if user.picture %}
+              src="{{ user.picture.url }}"
+            {% else %}
+              src="{% static 'img/avatar.jpg' %}"
+            {% endif %}
+              class="rounded"
+              height="35"
+              width="45"
+              alt="pic"
+              loading="lazy"
+            />
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdownMenuAvatar"
+          >
+            <li>
+              <a class="dropdown-item" href="{{ user.get_absolute_url }}">My profile</a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+            </li>
+          </ul>
+        </div>
+
+        {% else %}
+          <a class="mx-2 btn btn-light" href="{% url 'account_login' %}">Login</a>
+
+          <a class="btn btn-light" href="{% url 'account_signup' %}">Sign Up</a>
+          
+        {% endif %}
+          
+      </div>
+      <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->
+
+  {% block content %}
+  {% endblock content %}
+
+  <!-- Footer -->
+  <footer class="bg-dark text-center text-white">
+    <!-- Grid container -->
+    <div class="container p-4">
+      <!-- Section: Social media -->
+      <section class="mb-4">
+        <!-- Facebook -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+          ><i class="fab fa-facebook-f"></i
+        ></a>
+
+        <!-- Twitter -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+          ><i class="fab fa-twitter"></i
+        ></a>
+
+        <!-- Google -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+          ><i class="fab fa-google"></i
+        ></a>
+
+        <!-- Instagram -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+          ><i class="fab fa-instagram"></i
+        ></a>
+
+        <!-- Linkedin -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+          ><i class="fab fa-linkedin-in"></i
+        ></a>
+
+        <!-- Github -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+          ><i class="fab fa-github"></i
+        ></a>
+      </section>
+      <!-- Section: Social media -->
+
+      <!-- Section: Text -->
+      <section class="mb-4">
+        <p>
+          Start your blog on Watpost and tell your stories.
+        </p>
+      </section>
+      <!-- Section: Text -->
+
+      <!-- Section: Links -->
+      <section class="">
+        <!--Grid row-->
+        <div class="row">
+
+          <!--Grid column-->
+          <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Account</h5>
+
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="{% url 'index' %}" class="text-white">Home</a>
+              </li>
+              <li>
+                <a href="{% url 'account_login' %}" class="text-white">Login</a>
+              </li>
+              <li>
+                <a href="{% url 'account_signup' %}" class="text-white">Sign Up</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Community</h5>
+
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">About</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Contact</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Advertise</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+          <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Watpost</h5>
+
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">Terms and conditions</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Privacy Policy</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Cookie Policy</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+        </div>
+        <!--Grid row-->
+      </section>
+      <!-- Section: Links -->
+    </div>
+    <!-- Grid container -->
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2020 Copyright:
+      Watpost.com
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+    integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+    crossorigin="anonymous"></script>
+    <script src="{% static 'MDB5-STANDARD-UI-KIT-Free-3.10.2/js/mdb.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <script>
+      var csrftoken = Cookies.get('csrftoken');
+      function csrfSafeMethod(method) {
+          return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+      $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          }
+      });
+
+
+      $(document).ready(function() {
+          $(document.body).on('click', 'a.follow', function(e) {
+              e.preventDefault();
+              $(this).addClass('active-follow');
+              $.post('{% url "user_follow" %}',
+                  {
+                      id: $(this).data('id'),
+                      action: $(this).data('action')
+                  },
+                  function(data) {
+                      if (data['status'] == 'ok') {
+                          var previous_action = $('a.active-follow').data('action');
+
+                          // toggle data-action
+                          $('a.active-follow').data('action', 
+                              previous_action == 'follow' ? 'unfollow' : 'follow');
+
+                          // toggle link_text
+                          $('a.active-follow').text(
+                              previous_action == 'follow' ? 'Unfollow' : 'Follow');
+
+                          // update total followers
+                          var previous_followers = parseInt(
+                              $('span.count').text());
+                          $('span.count').text(previous_action == 'follow' ?
+                          previous_followers + 1 : previous_followers - 1);
+                          $('a.follow').removeClass('active-follow');
+                      
+                      }
+                  }
+              );
+          });
+
+          
+          $(document.body).on('click','a.like', function(e) {
+              e.preventDefault();
+              $(this).addClass('active-like');
+              $.post('{% url "post_like" %}',
+                  {
+                      id: $(this).data('id'),
+                      action: $(this).data('action')
+                  },
+                  function(data) {
+                      if (data['status'] == 'ok') {
+                          var previous_action = $('.active-like').data('action');
+
+                          // toggle data-action
+                          $('.active-like').data('action', previous_action == 'like' ? 'unlike' : 'like');
+
+                          // toggle count and icon
+                          var previous_likes = parseInt($('.active-like').siblings('span').text());
+                          if (previous_action == 'like'){
+                              $('.active-like').children('i').removeClass('far')
+                              $('.active-like').children('i').addClass('fas')
+                              $('.active-like').children('i').css('color', 'red')
+                          }
+                          else {
+                              $('.active-like').children('i').removeClass('fas')
+                              $('.active-like').children('i').addClass('far')
+                              $('.active-like').children('i').css('color', '')
+                          }
+                          
+                          $('.active-like').siblings('span').text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1);
+                          $('a.like').removeClass('active-like');
+                      }
+                  }
+                  
+              );
+              
+          });
+      })
+    </script>
+</body>
+</html>

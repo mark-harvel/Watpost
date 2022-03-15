@@ -1,0 +1,22 @@
+
+<div class="mt-3 mb-3 card h-100 post-item hover-overlay hover-zoom">
+
+    <a href="{{ post.get_absolute_url }}" class="ripple">
+        <img src="{{ post.poster.url }}" class="card-img-top" alt="Poster Not Found" />
+    </a>
+    <a href="{{ post.get_absolute_url }}" class="ripple">
+        <div class="card-body">
+            {% if post.status == 0 %}
+            <h5 class="text-center" style="background-color: rgb(255, 188, 62);">
+                DRAFT
+            </h5>
+            {% endif %}
+            <h5>
+                {% if post.is_nsfw == True %}
+                    <span style="color: red;">+18</span>
+                {% endif %}
+                {{ post.title|truncatechars:100 }}
+            </h5>
+        </div>
+    </a>
+</div>
